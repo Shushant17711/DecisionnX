@@ -10,9 +10,10 @@
  * Fetched on demand rather than bundled, so the JSON never costs the first paint.
  */
 
+import { asset } from "./base";
 import { getEntry, importEntries } from "./history";
 
-export const SAMPLE_URL = "/demo-evaluation.json";
+export const SAMPLE_URL = asset("/demo-evaluation.json");
 
 /** The record the "worked example" affordances point at. */
 export const FEATURED_SAMPLE_ID = "ev_sample_tiffin";

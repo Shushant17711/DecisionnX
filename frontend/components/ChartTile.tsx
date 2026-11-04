@@ -5,7 +5,7 @@ import { useId, useState } from "react";
 import { Icon } from "./Icon";
 import type { Chart, ChartPoint } from "@/lib/types";
 
-const SPLIT_COLORS = ["#bf8600", "#00a299", "#d04f47", "#7973ca", "#b3622a"];
+const SPLIT_COLORS = ["oklch(92% 0.07 97)", "oklch(76% 0.06 256)", "oklch(74% 0.06 22)", "oklch(72% 0.08 150)", "oklch(70% 0.07 60)"];
 
 const SERIES = "var(--accent)";
 const GRID = "var(--border-subtle)";
@@ -248,7 +248,7 @@ export function ChartTile({ chart, compact = false }: { chart: Chart; compact?: 
           className="shrink-0 rounded-[2px] border px-1.5 py-0.5 text-[0.625rem] uppercase tracking-[0.08em]"
           style={
             chart.measured
-              ? { borderColor: "oklch(70% 0.12 188 / 0.35)", color: "var(--patina)" }
+              ? { borderColor: "var(--patina-line)", color: "var(--patina)" }
               : { borderColor: "var(--border-subtle)", color: "var(--text-muted)" }
           }
           title={

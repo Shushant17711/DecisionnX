@@ -56,8 +56,8 @@ def test_origin_list_is_configurable(client, monkeypatch):
 def test_token_enforced_only_when_set(client, monkeypatch):
     monkeypatch.setattr(config, "API_TOKEN", "s3cret")
     assert _post(client).status_code == 401
-    assert _post(client, headers={**ORIGIN, "X-DecisionX-Token": "wrong"}).status_code == 401
-    assert _post(client, headers={**ORIGIN, "X-DecisionX-Token": "s3cret"}).status_code == 200
+    assert _post(client, headers={**ORIGIN, "X-DecisionnX-Token": "wrong"}).status_code == 401
+    assert _post(client, headers={**ORIGIN, "X-DecisionnX-Token": "s3cret"}).status_code == 200
 
 
 def test_health_is_not_gated(client, monkeypatch):

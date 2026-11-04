@@ -1,5 +1,5 @@
 """
-DecisionX — LLM output validation
+DecisionnX — LLM output validation
 
 Models return "8/10", "7.5", a bare string where a list belongs, NaN, or an
 object with half its fields missing. Everything an LLM produced passes through

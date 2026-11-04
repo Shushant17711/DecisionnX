@@ -1,5 +1,5 @@
 """
-DecisionX — Persona Roster + Panel Architect
+DecisionnX — Persona Roster + Panel Architect
 
 12 built-in expert personas that are dynamically assembled based on the idea's
 domain. The Critic is ALWAYS included. Every persona returns the SAME JSON shape

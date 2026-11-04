@@ -20,7 +20,7 @@ export function formatBytes(bytes: number): string {
 function rejectionReason(file: File): string | null {
   const ext = file.name.slice(file.name.lastIndexOf(".")).toLowerCase();
   if (!ACCEPTED.includes(ext)) {
-    return `${file.name} — DecisionX reads PDFs, spreadsheets, and text files.`;
+    return `${file.name} — DecisionnX reads PDFs, spreadsheets, and text files.`;
   }
   if (file.size > MAX_FILE_BYTES) {
     return `${file.name} is ${formatBytes(file.size)}. The limit is ${formatBytes(MAX_FILE_BYTES)}.`;
@@ -176,7 +176,7 @@ export function FileDrop({
           {rejected.map((message) => (
             <li
               key={message}
-              className="flex items-start gap-2 text-[0.75rem] leading-relaxed text-[oklch(72%_0.15_27)]"
+              className="flex items-start gap-2 text-[0.75rem] leading-relaxed text-[var(--vermilion-text)]"
             >
               <Icon name="alert" size={13} className="mt-0.5 shrink-0" />
               {message}

@@ -30,7 +30,7 @@ export function StorageNotice() {
     >
       {notice && (
         <div className="panel pointer-events-auto flex max-w-[34rem] items-start gap-3 p-4 shadow-[var(--shadow-lifted)]">
-          <Icon name="alert" size={16} className="mt-0.5 shrink-0 text-[oklch(72%_0.15_27)]" />
+          <Icon name="alert" size={16} className="mt-0.5 shrink-0 text-[var(--vermilion-text)]" />
           <p className="text-[0.8125rem] leading-relaxed text-[var(--text-secondary)]">{notice.message}</p>
           <button
             type="button"

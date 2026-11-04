@@ -1,8 +1,8 @@
-# DecisionX
+# DecisionnX
 
-DecisionX is a generalized, multi-agent idea evaluation platform designed to simulate a structured expert boardroom for evaluating business, technical, research, product, and creative ideas.
+DecisionnX is a generalized, multi-agent idea evaluation platform designed to simulate a structured expert boardroom for evaluating business, technical, research, product, and creative ideas.
 
-Instead of relying on a single AI response, DecisionX assembles multiple specialized AI experts, gives each expert an independent perspective, and then uses a dedicated synthesis agent to combine their opinions into a final decision-oriented report.
+Instead of relying on a single AI response, DecisionnX assembles multiple specialized AI experts, gives each expert an independent perspective, and then uses a dedicated synthesis agent to combine their opinions into a final decision-oriented report.
 
 The goal is simple:
 
@@ -18,15 +18,17 @@ The goal is simple:
 
 ## 📑 Table of Contents
 
-* [Why DecisionX?](#-why-decisionx)
+* [Why DecisionnX?](#-why-decisionx)
 * [Getting Started](#-getting-started)
 * [How It Works](#-how-it-works)
 * [Features](#-features)
+* [Who Is It For?](#-who-is-it-for)
 * [Architecture](#️-architecture)
 * [LLM Provider Architecture](#-llm-provider-architecture)
 * [Project Structure](#-project-structure)
 * [Tech Stack](#-tech-stack)
 * [Example Use Cases](#-example-use-cases)
+* [Cost and Business Model](#-cost-and-business-model)
 * [API Reference](#-api-reference)
 * [API Key Security](#-api-key-security)
 * [Configuration](#️-configuration)
@@ -43,13 +45,13 @@ The goal is simple:
 
 ---
 
-## 🎯 Why DecisionX?
+## 🎯 Why DecisionnX?
 
 Traditional AI chat interfaces generally provide a single perspective. While this can be useful for brainstorming, important decisions often require multiple viewpoints.
 
 For example, a startup idea might look attractive from an investor's perspective but have serious technical limitations. Similarly, a technically impressive product might have weak market demand.
 
-DecisionX addresses this problem by creating a virtual panel containing different expert perspectives.
+DecisionnX addresses this problem by creating a virtual panel containing different expert perspectives.
 
 A typical panel can include:
 
@@ -60,7 +62,7 @@ A typical panel can include:
 * ⚖️ Regulator: legal and compliance risk
 * 🧠 Critic: challenges the assumptions everyone else makes
 
-The final decision is not based on one agent's opinion. Instead, DecisionX looks for **patterns, disagreements, risks, and opportunities across the entire panel**.
+The final decision is not based on one agent's opinion. Instead, DecisionnX looks for **patterns, disagreements, risks, and opportunities across the entire panel**.
 
 ---
 
@@ -78,8 +80,8 @@ The final decision is not based on one agent's opinion. Instead, DecisionX looks
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/Shushant17711/DecisionX.git
-cd DecisionX
+git clone https://github.com/Shushant17711/DecisionnX.git
+cd DecisionnX
 ```
 
 ### 2. Add your API keys
@@ -96,7 +98,7 @@ Keys go in plain text files inside `backend/`, **one key per line** (no quotes, 
 printf '%s\n' "gsk_your_key_here" > backend/groqapi
 ```
 
-You can put several keys in one file. DecisionX rotates through them, and a key that returns 401/403 is skipped for the rest of the run. Lines starting with `#` are ignored.
+You can put several keys in one file. DecisionnX rotates through them, and a key that returns 401/403 is skipped for the rest of the run. Lines starting with `#` are ignored.
 
 ### 3. (Optional) Settings
 
@@ -182,7 +184,7 @@ Describe the idea (up to 4,000 characters). You can also add context such as suc
 
 ### 2. The panel is assembled
 
-DecisionX has **12 built-in experts**:
+DecisionnX has **12 built-in experts**:
 
 | Expert | Role |
 | --- | --- |
@@ -242,9 +244,21 @@ The question it answers is not "is this a good idea?" but **"is this worth pursu
 
 ---
 
+## 🎯 Who Is It For?
+
+* **Early-stage founders and indie hackers**: validate before building, and get a 7-day plan of cheap experiments.
+* **Students, hackathon and capstone teams**: pick and defend a project with feedback from investor, engineer, user and regulator perspectives.
+* **Product managers and innovation teams**: a structured pre-mortem for feature and product bets.
+* **Incubators, accelerators and competitions**: a consistent first-pass review of every application.
+* **Researchers and small business owners**: domain-specific challenge before committing time or money.
+
+See [projectDetail.md](projectDetail.md#6-target-audience) for each segment's problem and what DecisionnX gives them.
+
+---
+
 ## 🏗️ Architecture
 
-DecisionX is a decoupled app: a **Next.js** frontend (port 3000) talks to a **FastAPI** backend (port 8001) over REST and NDJSON streaming.
+DecisionnX is a decoupled app: a **Next.js** frontend (port 3000) talks to a **FastAPI** backend (port 8001) over REST and NDJSON streaming.
 
 * **Frontend** (`frontend/`): the idea form, panel size, file uploads, live panel, expert cards, charts, results and report pages, history and exports.
 * **Backend** (`backend/`): validates requests, parses files, classifies the idea, assembles the panel, runs the experts in parallel under a global concurrency limit, validates their JSON, runs synthesis and streams the events.
@@ -253,7 +267,7 @@ DecisionX is a decoupled app: a **Next.js** frontend (port 3000) talks to a **Fa
 
 ## 🔌 LLM Provider Architecture
 
-DecisionX supports multiple LLM providers through a provider chain.
+DecisionnX supports multiple LLM providers through a provider chain.
 
 All three providers use OpenAI-compatible endpoints through the `openai` Python SDK. Each stage of the pipeline uses its own model:
 
@@ -280,7 +294,7 @@ Synthesis has a hard deadline of 55 seconds in total, and a provider without key
 ## 📁 Project Structure
 
 ```text
-DecisionX/
+DecisionnX/
 │
 ├── frontend/
 │   ├── app/
@@ -349,7 +363,7 @@ DecisionX/
 
 ## 💡 Example Use Cases
 
-DecisionX is designed to be domain-agnostic.
+DecisionnX is designed to be domain-agnostic.
 
 ### 🚀 Startup Validation
 
@@ -407,7 +421,7 @@ The panel could analyze:
 
 ### 🔬 Research Ideas
 
-DecisionX can also be used to challenge research or engineering concepts by assembling experts around:
+DecisionnX can also be used to challenge research or engineering concepts by assembling experts around:
 
 * Technical feasibility
 * Existing alternatives
@@ -415,6 +429,23 @@ DecisionX can also be used to challenge research or engineering concepts by asse
 * Practical implementation
 * Risks
 * Scalability
+
+---
+
+## 💵 Cost and Business Model
+
+**Cost per evaluation.** The experts run on Groq's `llama-3.1-8b-instant` and the synthesis on `llama-3.3-70b-versatile`. At Groq's list prices when this was written, a typical 5-expert evaluation costs about **$0.003**. The heaviest possible run (30 experts, 8 long files) costs about **$0.04**. These are estimates from prompt sizes and output limits, not measured bills. While developing, the providers' free tiers cover it.
+
+**Proposed business model** (not built yet; it needs accounts and a hosted version):
+
+| Tier | Price | Includes |
+| --- | --- | --- |
+| Self-hosted | Free (MIT) | Full app, bring your own API keys |
+| Hosted Free | Free | A few evaluations a month, up to 5 experts |
+| Pro | ~$9 / month | ~100 evaluations, up to 30 experts, file uploads, cloud history |
+| Team / Institution | Per seat | Shared workspaces and bulk evaluation for incubators, universities and competitions |
+
+LLM fees stay under half of Pro revenue even at worst-case usage, so the main costs are hosting and getting users. See [projectDetail.md](projectDetail.md#8-financial-aspect) for the full breakdown, the competitive landscape and a suggested presentation outline.
 
 ---
 
@@ -456,7 +487,7 @@ Streams the evaluation as NDJSON (`application/x-ndjson`), one event per line. T
 | `done` | final result, including the boardroom synthesis |
 | `error` | the run failed; `message` includes the request id |
 
-Every response carries an `X-Request-ID` header that matches the server log lines. If `DECISIONX_API_TOKEN` is set, send it as an `X-DecisionX-Token` header. **The web frontend does not send this header**, so setting the token blocks evaluations from the browser. Use it only when you call the API directly.
+Every response carries an `X-Request-ID` header that matches the server log lines. If `DECISIONX_API_TOKEN` is set, send it as an `X-DecisionnX-Token` header. **The web frontend does not send this header**, so setting the token blocks evaluations from the browser. Use it only when you call the API directly.
 
 ---
 
@@ -486,7 +517,7 @@ If a key is accidentally exposed, revoke it immediately through the correspondin
 
 ## ⚙️ Configuration
 
-DecisionX can be configured depending on the desired evaluation workflow.
+DecisionnX can be configured depending on the desired evaluation workflow.
 
 Potential configuration parameters include:
 
@@ -509,7 +540,7 @@ The backend reads `DECISIONX_*` variables from the environment, or from `backend
 | `DECISIONX_HOST` | `127.0.0.1` | Bind address (`python main.py`, `start_dev.*`) |
 | `DECISIONX_PORT` | `8001` | Port for `python main.py` |
 | `DECISIONX_ALLOWED_ORIGINS` | `http://localhost:3000,http://127.0.0.1:3000` | `/api/evaluate*` returns 403 when an `Origin` header is present and not listed |
-| `DECISIONX_API_TOKEN` | unset | If set, `/api/evaluate*` requires header `X-DecisionX-Token` (401 otherwise). The web UI doesn't send it, so this is for direct API use only |
+| `DECISIONX_API_TOKEN` | unset | If set, `/api/evaluate*` requires header `X-DecisionnX-Token` (401 otherwise). The web UI doesn't send it, so this is for direct API use only |
 | `DECISIONX_MAX_CONCURRENT_AGENTS` | `12` | Persona LLM calls in flight across all evaluations |
 | `DECISIONX_RUN_TIMEOUT` | `120` | Seconds per evaluation; slow experts are reported as timed out |
 | `DECISIONX_CONTEXT_BUDGET_CHARS` | `6000` | Characters each expert sees (synthesizer ½, architect ¼). Typed context is never cut for experts or synthesis; documents share the rest (at least ¼ of the budget), split fairly per file |
@@ -543,7 +574,7 @@ DECISIONX_LIVE_TESTS=1 python -m pytest tests/integration   # real provider call
 `start_omarchy.sh` wraps `start_dev.sh` for desktop use: it starts both servers in the background, waits until they answer, and opens the UI as a web-app window (`omarchy-launch-webapp`, falling back to `xdg-open`). Errors show as desktop notifications.
 
 ```bash
-./start_omarchy.sh install   # adds `decisionx` to ~/.local/bin and a "DecisionX" app-launcher entry
+./start_omarchy.sh install   # adds `decisionx` to ~/.local/bin and a "DecisionnX" app-launcher entry
 decisionx                    # start if needed, then open the window
 decisionx stop | restart | status | logs
 decisionx uninstall
@@ -604,7 +635,7 @@ The scripts also reinstall backend requirements automatically whenever `backend/
 
 ## 🚧 Current Limitations
 
-DecisionX is still an evolving project.
+DecisionnX is still an evolving project.
 
 Some limitations include:
 
@@ -615,7 +646,7 @@ Some limitations include:
 * Different LLM providers may produce different outputs.
 * Large panels can increase inference cost and execution time.
 
-For high-impact decisions, DecisionX should complement—not replace—human expertise and real-world validation.
+For high-impact decisions, DecisionnX should complement—not replace—human expertise and real-world validation.
 
 ---
 
@@ -675,7 +706,7 @@ When contributing, please try to keep changes focused and document any significa
 
 ## ⚠️ Disclaimer
 
-DecisionX is an AI-powered decision-support system.
+DecisionnX is an AI-powered decision-support system.
 
 Its recommendations, scores, and expert opinions are generated by artificial intelligence and should not be interpreted as professional financial, legal, medical, engineering, or investment advice.
 
@@ -685,7 +716,7 @@ Always validate important decisions using reliable data, qualified professionals
 
 ## 🌟 Vision
 
-DecisionX is built around a simple idea:
+DecisionnX is built around a simple idea:
 
 > **Better decisions come from better questions and diverse perspectives.**
 
@@ -693,19 +724,19 @@ As AI systems become increasingly capable, the next step is not simply asking on
 
 It is creating systems where multiple specialized perspectives can challenge one another, expose blind spots, identify risks, and collectively produce a more useful decision.
 
-DecisionX aims to become a general-purpose **AI boardroom for ideas**—a place where an idea can be challenged before real-world time, money, and resources are invested.
+DecisionnX aims to become a general-purpose **AI boardroom for ideas**—a place where an idea can be challenged before real-world time, money, and resources are invested.
 
 ---
 
 ## 👥 Credits
 
-DecisionX was built by **Shushant**, **Aditya** and **Lakshit**.
+DecisionnX was built by **Shushant**, **Aditya** and **Lakshit**.
 
 ---
 
 ## 📄 License
 
-DecisionX is released under the [MIT License](LICENSE).
+DecisionnX is released under the [MIT License](LICENSE).
 
 Copyright (c) 2026 Shushant, Aditya and Lakshit.
 
@@ -713,7 +744,7 @@ Copyright (c) 2026 Shushant, Aditya and Lakshit.
 
 ## ⭐ Support the Project
 
-If you find DecisionX useful, consider:
+If you find DecisionnX useful, consider:
 
 * ⭐ Starring the repository
 * 🐛 Reporting bugs

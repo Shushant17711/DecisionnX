@@ -259,7 +259,7 @@ function HistoryPanel({
         onClick={close}
         tabIndex={-1}
         aria-hidden="true"
-        className="fixed inset-0 z-40 bg-[oklch(2%_0_0/0.62)] backdrop-blur-[2px]"
+        className="fixed inset-0 z-40 bg-[oklch(12%_0.03_140/0.6)] backdrop-blur-[2px]"
       />
 
       <motion.aside
@@ -469,7 +469,7 @@ function HistoryPanel({
                     clearHistory();
                     setConfirmClear(false);
                   }}
-                  className="rounded-[3px] border border-[oklch(62%_0.17_27/0.4)] bg-[var(--vermilion-dim)] px-2.5 py-1 text-[0.75rem] text-[oklch(72%_0.15_27)] transition-colors duration-150 hover:bg-[oklch(62%_0.17_27/0.22)]"
+                  className="rounded-[3px] border border-[var(--vermilion-line)] bg-[var(--vermilion-dim)] px-2.5 py-1 text-[0.75rem] text-[var(--vermilion-text)] transition-colors duration-150 hover:bg-[var(--vermilion-dim)]"
                 >
                   Delete all
                 </button>

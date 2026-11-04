@@ -1,5 +1,5 @@
 """
-DecisionX — Orchestrator
+DecisionnX — Orchestrator
 
 Core evaluation pipeline:
 0. If uploaded documents (or, for the Panel Architect, the typed context) do

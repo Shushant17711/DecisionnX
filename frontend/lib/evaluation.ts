@@ -249,11 +249,11 @@ function parseLine(line: string): StreamEvent | null {
   try {
     raw = JSON.parse(trimmed);
   } catch {
-    console.warn("[DecisionX] Skipping malformed stream line:", trimmed.slice(0, 200));
+    console.warn("[DecisionnX] Skipping malformed stream line:", trimmed.slice(0, 200));
     return null;
   }
   const event = parseStreamEvent(raw);
-  if (!event) console.warn("[DecisionX] Skipping unrecognised stream event:", raw);
+  if (!event) console.warn("[DecisionnX] Skipping unrecognised stream event:", raw);
   return event;
 }
 

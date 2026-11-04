@@ -1,5 +1,5 @@
 """
-DecisionX — isolated parse worker
+DecisionnX — isolated parse worker
 
     python -m parsers.worker <filename> <max_chars> <memory_mb>  < file-bytes
 

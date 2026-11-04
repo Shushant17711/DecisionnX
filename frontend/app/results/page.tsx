@@ -11,6 +11,7 @@ import { DownloadMenu } from "@/components/DownloadMenu";
 import { Icon, personaIcon } from "@/components/Icon";
 import { RoleTabs, StatusChips } from "@/components/RoleFilter";
 import { ScoreMark } from "@/components/ScoreMark";
+import { Chamber, stanceFromVerdict, type Seat } from "@/components/Chamber";
 import {
   getServerSnapshot,
   getSnapshot,
@@ -30,8 +31,8 @@ function verdictTone(verdict: string): { className: string; color: string } {
   const v = verdict?.toLowerCase();
   if (v === "go" || v === "bullish") return { className: "verdict-go", color: "var(--patina)" };
   if (v === "no-go" || v === "bearish")
-    return { className: "verdict-nogo", color: "oklch(72% 0.15 27)" };
-  return { className: "verdict-caution", color: "var(--accent)" };
+    return { className: "verdict-nogo", color: "var(--vermilion)" };
+  return { className: "verdict-caution", color: "var(--sulphur)" };
 }
 
 /* ─── Sections ─── */
@@ -52,13 +53,14 @@ function ExpertCard({ persona }: { persona: PersonaResult }) {
 
   return (
     <article
-      className="panel seam settle flex h-full min-w-0 flex-col p-5"
-      style={{ "--seam-color": `${persona.color}` } as React.CSSProperties}
+      id={`seat-${persona.key}`}
+      className="panel seam settle flex h-full min-w-0 scroll-mt-24 flex-col p-5"
+      style={{ "--seam-color": tone.color } as React.CSSProperties}
     >
       <header className="flex items-start gap-3">
         <span
           className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-[3px]"
-          style={{ background: `color-mix(in oklab, ${persona.color} 14%, transparent)`, color: persona.color }}
+          style={{ background: `color-mix(in oklab, ${tone.color} 16%, transparent)`, color: tone.color }}
         >
           <Icon name={personaIcon(persona.icon)} size={18} />
         </span>
@@ -79,14 +81,14 @@ function ExpertCard({ persona }: { persona: PersonaResult }) {
 
       {failed ? (
         <p className="mt-5 flex items-start gap-2 text-[0.8125rem] leading-relaxed text-[var(--text-muted)]">
-          <Icon name="alert" size={14} className="mt-0.5 shrink-0 text-[oklch(72%_0.15_27)]" />
+          <Icon name="alert" size={14} className="mt-0.5 shrink-0 text-[var(--vermilion-text)]" />
           This expert could not be reached. {analysis.headline}
         </p>
       ) : (
         <>
           <div className="mt-4 flex items-center justify-between gap-3">
             <span className={`verdict ${tone.className}`}>{analysis.verdict}</span>
-            <ScoreMark score={analysis.score} color={persona.color} />
+            <ScoreMark score={analysis.score} color={tone.color} />
           </div>
 
           <p className="mt-4 text-[0.875rem] leading-relaxed text-[var(--foreground)]">
@@ -119,7 +121,7 @@ function ExpertCard({ persona }: { persona: PersonaResult }) {
                     key={i}
                     className="flex items-start gap-2 text-[0.8125rem] leading-relaxed text-[var(--text-secondary)]"
                   >
-                    <Icon name="cross" size={13} className="mt-1 shrink-0 text-[oklch(72%_0.15_27)]" />
+                    <Icon name="cross" size={13} className="mt-1 shrink-0 text-[var(--vermilion-text)]" />
                     <span>{c}</span>
                   </li>
                 ))}
@@ -148,7 +150,7 @@ function ExpertCard({ persona }: { persona: PersonaResult }) {
 
 function AwaitingCard({ expert }: { expert: Expert }) {
   return (
-    <article className="panel awaiting relative flex h-full flex-col p-5" aria-busy="true">
+    <article id={`seat-${expert.key}`} className="panel awaiting relative flex h-full scroll-mt-24 flex-col p-5" aria-busy="true">
       <header className="flex items-start gap-3">
         <span
           className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-[3px]"
@@ -348,6 +350,24 @@ function ResultsView() {
         ? "Evaluation complete."
         : "";
 
+  /* The table: answered seats wear their stance and drift in by score;
+     pending seats wait for the lamp. */
+  const seats: Seat[] = useMemo(
+    () => [
+      ...state.personas.map((p) => ({
+        key: p.key,
+        label: `${p.name}: ${p.analysis.verdict ?? "no verdict"}${p.analysis.score != null ? `, ${p.analysis.score}/10` : ""}`,
+        stance: p.analysis._failed ? ("failed" as const) : stanceFromVerdict(p.analysis.verdict),
+        score: synthesis ? p.analysis.score : null,
+      })),
+      ...pending.map((e) => ({ key: e.key, label: `${e.name}: deliberating`, stance: "waiting" as const })),
+    ],
+    [state.personas, pending, synthesis],
+  );
+  const jumpToSeat = useCallback((key: string) => {
+    document.getElementById(`seat-${key}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, []);
+
   const boardCharts = useMemo(
     () => [synthesis?.score_chart, ...(synthesis?.charts ?? [])].filter(Boolean) as Chart[],
     [synthesis],
@@ -482,7 +502,7 @@ function ResultsView() {
                     key={a.name}
                     className="flex items-start gap-2 text-[0.75rem] text-[var(--text-muted)]"
                   >
-                    <Icon name="alert" size={12} className="mt-0.5 shrink-0 text-[oklch(72%_0.15_27)]" />
+                    <Icon name="alert" size={12} className="mt-0.5 shrink-0 text-[var(--vermilion-text)]" />
                     {a.name}: {a.error}
                   </li>
                 ))}
@@ -497,10 +517,10 @@ function ResultsView() {
           <div
             role="alert"
             className="panel p-6"
-            style={{ borderColor: "oklch(62% 0.17 27 / 0.4)", background: "var(--vermilion-dim)" }}
+            style={{ borderColor: "var(--vermilion-line)", background: "var(--vermilion-dim)" }}
           >
             <h2 className="flex items-center gap-2 text-[1rem]">
-              <Icon name="alert" size={18} className="text-[oklch(72%_0.15_27)]" />
+              <Icon name="alert" size={18} className="text-[var(--vermilion-text)]" />
               The evaluation stopped
             </h2>
             <p className="measure mt-2.5 text-[0.875rem] leading-relaxed text-[var(--text-secondary)]">
@@ -520,10 +540,10 @@ function ResultsView() {
         <section className="mt-10">
           <div
             className="panel p-6 md:p-8"
-            style={{ borderColor: "oklch(62% 0.17 27 / 0.4)", background: "var(--vermilion-dim)" }}
+            style={{ borderColor: "var(--vermilion-line)", background: "var(--vermilion-dim)" }}
           >
             <h2 className="flex items-center gap-2.5 text-[1.125rem]">
-              <Icon name="alert" size={19} className="shrink-0 text-[oklch(72%_0.15_27)]" />
+              <Icon name="alert" size={19} className="shrink-0 text-[var(--vermilion-text)]" />
               No expert could be reached
             </h2>
             <p className="measure mt-3 text-[0.9375rem] leading-relaxed text-[var(--text-secondary)]">
@@ -544,11 +564,24 @@ function ResultsView() {
             style={{ "--seam-color": verdictTone(synthesis.verdict).color } as React.CSSProperties}
           >
             <div className="flex flex-col gap-7 md:flex-row md:items-start md:gap-10">
-              <div className="shrink-0">
-                <ScoreMark
-                  score={synthesis.overall_score}
-                  color={verdictTone(synthesis.verdict).color}
-                  size="lg"
+              <div className="w-full shrink-0 md:w-[22rem]">
+                <Chamber
+                  seats={seats}
+                  onSeat={jumpToSeat}
+                  caption="Closer to the middle means a higher score. Pick a seat to read it."
+                  centre={
+                    <>
+                      <span
+                        className="display tnum text-[3rem] leading-none"
+                        style={{ color: verdictTone(synthesis.verdict).color }}
+                      >
+                        {synthesis.overall_score ?? "–"}
+                      </span>
+                      <span className="mt-1 text-[0.75rem] uppercase tracking-[0.12em] text-[var(--text-secondary)]">
+                        board score / 10
+                      </span>
+                    </>
+                  }
                 />
               </div>
               <div className="min-w-0 flex-1">
@@ -570,7 +603,7 @@ function ResultsView() {
 
             {(synthesis.failed_agents?.length ?? 0) > 0 && (
               <p className="mt-6 flex items-start gap-2 border-t border-[var(--border-subtle)] pt-4 text-[0.8125rem] text-[var(--text-muted)]">
-                <Icon name="alert" size={14} className="mt-0.5 shrink-0 text-[oklch(72%_0.15_27)]" />
+                <Icon name="alert" size={14} className="mt-0.5 shrink-0 text-[var(--vermilion-text)]" />
                 {synthesis.failed_agents!.join(", ")} could not be reached and{" "}
                 {synthesis.failed_agents!.length === 1 ? "was" : "were"} left out of the score.
               </p>
@@ -580,7 +613,25 @@ function ResultsView() {
       ) : state.status === "running" ? (
         <section className="mt-10">
           <div className="panel awaiting relative p-6 md:p-8">
-            <p className="text-[0.9375rem] text-[var(--text-secondary)]" aria-hidden="true">
+            {seats.length > 0 && (
+              <Chamber
+                className="mx-auto mb-6 max-w-[30rem]"
+                seats={seats}
+                speaking
+                onSeat={jumpToSeat}
+                centre={
+                  <>
+                    <span className="display tnum text-[2.5rem] leading-none text-[var(--foreground)]">
+                      {done}/{total}
+                    </span>
+                    <span className="mt-1 text-[0.75rem] uppercase tracking-[0.12em] text-[var(--text-secondary)]">
+                      have spoken
+                    </span>
+                  </>
+                }
+              />
+            )}
+            <p className="text-center text-[0.9375rem] text-[var(--text-secondary)]" aria-hidden="true">
               {progressMessage}
             </p>
             <div
@@ -725,10 +776,10 @@ function ResultsView() {
             <SectionHeading>Standing and exposure</SectionHeading>
             <div className="grid gap-4 md:grid-cols-2">
               <SwotQuadrant title="Strengths" items={synthesis.strengths} color="var(--patina)" />
-              <SwotQuadrant title="Weaknesses" items={synthesis.weaknesses} color="oklch(72% 0.15 27)" />
+              <SwotQuadrant title="Weaknesses" items={synthesis.weaknesses} color="var(--vermilion-text)" />
               <SwotQuadrant title="Opportunities" items={synthesis.opportunities} color="var(--accent)" />
-              {/* Use bronze to ensure quadrant doesn't look unfinished. */}
-              <SwotQuadrant title="Threats" items={synthesis.threats} color="oklch(66% 0.1 52)" />
+              {/* Brown drab, a quieter cousin of "against". */}
+              <SwotQuadrant title="Threats" items={synthesis.threats} color="oklch(70% 0.07 60)" />
             </div>
           </section>
 
@@ -825,10 +876,10 @@ function Shell({
   return (
     <div className="relative z-[1] min-h-dvh">
       <HistorySidebar open={historyOpen} onClose={onCloseHistory} activeId={activeId} />
-      <nav className="sticky top-0 z-30 border-b border-[var(--border-subtle)] bg-[oklch(7%_0.006_95/0.97)] backdrop-blur-lg">
+      <nav className="sticky top-0 z-30 border-b border-[var(--border-subtle)] bg-[oklch(21%_0.03_138/0.96)] backdrop-blur-lg">
         <div className="mx-auto flex max-w-[76rem] items-center gap-3 px-6 py-4 md:px-10">
           <Link href="/" className="wordmark mr-auto no-underline">
-            DecisionX
+            DecisionnX
           </Link>
           {actions}
           <HistoryToggle onClick={onOpenHistory} />
