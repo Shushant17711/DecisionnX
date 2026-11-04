@@ -1,5 +1,7 @@
 # DecisionnX
 
+**Live demo:** https://shushant17711.github.io/DecisionnX/ (static frontend with two finished example verdicts; running new evaluations needs the backend locally, see [Getting Started](#getting-started)).
+
 DecisionnX is a generalized, multi-agent idea evaluation platform designed to simulate a structured expert boardroom for evaluating business, technical, research, product, and creative ideas.
 
 Instead of relying on a single AI response, DecisionnX assembles multiple specialized AI experts, gives each expert an independent perspective, and then uses a dedicated synthesis agent to combine their opinions into a final decision-oriented report.
