@@ -1,5 +1,5 @@
 """
-DecisionX — Context budget
+DecisionnX — Context budget
 
 Typed context and every uploaded document compete for a fixed number of prompt
 characters. Each agent type has its own budget (experts see the most, the Panel

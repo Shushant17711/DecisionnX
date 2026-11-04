@@ -1,5 +1,5 @@
 """
-DecisionX — Chart contract
+DecisionnX — Chart contract
 
 An expert may attach ONE chart to its analysis when the point it is making is
 genuinely quantitative. Everything here exists to keep a small, fast model from

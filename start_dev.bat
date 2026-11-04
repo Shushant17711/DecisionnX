@@ -1,7 +1,7 @@
 @echo off
 setlocal EnableDelayedExpansion
 echo ==========================================
-echo Starting DecisionX Dev Servers
+echo Starting DecisionnX Dev Servers
 echo ==========================================
 
 if not defined DECISIONX_HOST set "DECISIONX_HOST=127.0.0.1"
@@ -58,11 +58,11 @@ if not exist "frontend\node_modules" (
 
 echo [3/4] Starting Backend (Port 8001)...
 cd backend
-start "DecisionX Backend" cmd /k "..\.venv\Scripts\python -m uvicorn main:app --host %DECISIONX_HOST% --port 8001 --reload"
+start "DecisionnX Backend" cmd /k "..\.venv\Scripts\python -m uvicorn main:app --host %DECISIONX_HOST% --port 8001 --reload"
 
 echo [4/4] Starting Frontend (Port 3000)...
 cd ..\frontend
-start "DecisionX Frontend" cmd /k "npm run dev"
+start "DecisionnX Frontend" cmd /k "npm run dev"
 
 cd ..
 echo ==========================================

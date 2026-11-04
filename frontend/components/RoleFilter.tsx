@@ -13,9 +13,9 @@
 import { ROLE_LENSES, STATUS_FILTERS, type RoleId, type StatusId } from "@/lib/roles";
 
 const STATUS_TONE: Record<StatusId, { color: string; border: string; background: string }> = {
-  favour: { color: "var(--patina)", border: "oklch(70% 0.12 188 / 0.35)", background: "var(--patina-dim)" },
-  mixed: { color: "var(--accent)", border: "var(--accent-line)", background: "var(--accent-dim)" },
-  against: { color: "oklch(72% 0.15 27)", border: "oklch(62% 0.17 27 / 0.38)", background: "var(--vermilion-dim)" },
+  favour: { color: "var(--patina)", border: "var(--patina-line)", background: "var(--patina-dim)" },
+  mixed: { color: "var(--sulphur)", border: "var(--sulphur-line)", background: "var(--sulphur-dim)" },
+  against: { color: "var(--vermilion-text)", border: "var(--vermilion-line)", background: "var(--vermilion-dim)" },
   unreachable: { color: "var(--text-secondary)", border: "var(--border-strong)", background: "var(--surface-hover)" },
 };
 

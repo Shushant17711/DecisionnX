@@ -21,7 +21,7 @@ export default function RouteError({
   unstable_retry?: () => void;
 }) {
   useEffect(() => {
-    console.error("[DecisionX] Page failed to render:", error);
+    console.error("[DecisionnX] Page failed to render:", error);
   }, [error]);
 
   const retry = unstable_retry ?? reset;
@@ -31,10 +31,10 @@ export default function RouteError({
       <div
         role="alert"
         className="panel w-full max-w-[30rem] p-7"
-        style={{ borderColor: "oklch(62% 0.17 27 / 0.4)" }}
+        style={{ borderColor: "var(--vermilion-line)" }}
       >
         <h1 className="flex items-center gap-2.5 text-[1.125rem]">
-          <Icon name="alert" size={18} className="shrink-0 text-[oklch(72%_0.15_27)]" />
+          <Icon name="alert" size={18} className="shrink-0 text-[var(--vermilion-text)]" />
           Something went wrong on this page
         </h1>
         <p className="mt-3 text-[0.9375rem] leading-relaxed text-[var(--text-secondary)]">

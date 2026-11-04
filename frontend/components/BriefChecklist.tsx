@@ -69,7 +69,7 @@ export function BriefChecklist({
                   style={
                     item.complete
                       ? {
-                          borderColor: "oklch(70% 0.12 188 / 0.45)",
+                          borderColor: "var(--patina-line)",
                           background: "var(--patina-dim)",
                           color: "var(--patina)",
                         }

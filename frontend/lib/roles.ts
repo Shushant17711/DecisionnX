@@ -1,7 +1,7 @@
 /**
  * Role lenses and verdict statuses — the two axes an evaluation can be filtered on.
  *
- * A DecisionX panel is a crowd of experts, and different readers only care about
+ * A DecisionnX panel is a crowd of experts, and different readers only care about
  * part of it: the person who has to live with the decision, the body that has to
  * approve it, the one paid to attack it. A lens groups the panel by whose interest
  * an expert represents, so a reader can scope both a panel and their history of

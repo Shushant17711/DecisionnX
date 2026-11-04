@@ -91,7 +91,7 @@ export function ArchitectureDiagram() {
           role="img"
           aria-labelledby="dx-diagram-title dx-diagram-desc"
         >
-          <title id="dx-diagram-title">The DecisionX evaluation pipeline</title>
+          <title id="dx-diagram-title">The DecisionnX evaluation pipeline</title>
           <desc id="dx-diagram-desc">
             An idea and its attachments are classified by domain, then a panel is assembled from a
             twelve-expert roster plus any bespoke experts the orchestrator designs for the idea.

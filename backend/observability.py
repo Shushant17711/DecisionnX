@@ -1,5 +1,5 @@
 """
-DecisionX — Logging and failure counters
+DecisionnX — Logging and failure counters
 
 Every log record carries the id of the evaluation it belongs to. The id lives
 in a ContextVar, so tasks spawned for each persona inherit it automatically.

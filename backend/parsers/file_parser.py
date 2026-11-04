@@ -1,5 +1,5 @@
 """
-DecisionX — File Parser (Generalized)
+DecisionnX — File Parser (Generalized)
 
 Extracts text from uploaded documents to provide as context to agents.
 Supports: PDF, CSV, XLSX, DOCX, and plain-text formats (txt, md, json, yaml, tsv).

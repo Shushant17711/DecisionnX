@@ -297,20 +297,22 @@ export function buildReportHtml(entry: HistoryEntry, note: string): string {
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&display=swap">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DecisionX report — ${escapeHtml(String(entry.idea ?? "").slice(0, 70))}</title>
+<title>DecisionnX report — ${escapeHtml(String(entry.idea ?? "").slice(0, 70))}</title>
 <style>
   :root {
-    --doc-paper: #fbf9f4;
-    --doc-panel: #ffffff;
-    --doc-ink: #211f1a;
-    --doc-body: #4a463d;
-    --doc-muted: #7c7669;
-    --doc-rule: rgba(33, 31, 26, 0.14);
-    --doc-accent: #8a6410;
-    --doc-go: #1f6f6a;
-    --doc-caution: #8a6410;
-    --doc-no: #a63a2c;
+    --doc-paper: #f5f0dc;
+    --doc-panel: #fbf8ea;
+    --doc-ink: #1a2318;
+    --doc-body: #3a4335;
+    --doc-muted: #5e6853;
+    --doc-rule: rgba(26, 35, 24, 0.16);
+    --doc-accent: #3d4a2f;
+    --doc-go: #3c5a8a;
+    --doc-caution: #7a6410;
+    --doc-no: #8a4a3e;
   }
   * { box-sizing: border-box; }
   body {
@@ -318,11 +320,13 @@ export function buildReportHtml(entry: HistoryEntry, note: string): string {
     padding: 3rem 1.5rem 4rem;
     background: var(--doc-paper);
     color: var(--doc-body);
-    font: 400 15px/1.65 "Albert Sans", "Helvetica Neue", Arial, sans-serif;
+    font: 400 15px/1.65 "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
   .sheet { max-width: 52rem; margin: 0 auto; }
-  h1, h2, h3, h4 { color: var(--doc-ink); font-weight: 500; line-height: 1.15; margin: 0; }
+  h1, h2 { font-family: "Zodiak", Georgia, serif; font-weight: 400; }
+  h3, h4 { font-weight: 600; }
+  h1, h2, h3, h4 { color: var(--doc-ink); line-height: 1.15; margin: 0; }
   h1 { font-size: 1.9rem; letter-spacing: -0.02em; }
   h2 {
     font-size: 1.05rem; letter-spacing: 0.02em; text-transform: uppercase;
@@ -375,7 +379,7 @@ export function buildReportHtml(entry: HistoryEntry, note: string): string {
 </head>
 <body>
 <div class="sheet">
-  <p class="wordmark">DecisionX — panel report</p>
+  <p class="wordmark">DecisionnX — panel report</p>
   <h1>${escapeHtml(entry.idea)}</h1>
   <p class="meta">${escapeHtml(formatDate(entry.createdAt))} · ${escapeHtml(formatNumber(entry.panelSize))} experts · ${
     entry.domains?.length ? escapeHtml(entry.domains.join(" · ")) : "no domain matched"
@@ -447,7 +451,7 @@ export function buildReportHtml(entry: HistoryEntry, note: string): string {
       <div class="card quad"><h3 style="color:var(--doc-go)">Strengths</h3>${list(synthesis.strengths)}</div>
       <div class="card quad"><h3 style="color:var(--doc-no)">Weaknesses</h3>${list(synthesis.weaknesses)}</div>
       <div class="card quad"><h3 style="color:var(--doc-caution)">Opportunities</h3>${list(synthesis.opportunities)}</div>
-      <div class="card quad"><h3 style="color:#8d5a2b">Threats</h3>${list(synthesis.threats)}</div>
+      <div class="card quad"><h3 style="color:#7a5a3a">Threats</h3>${list(synthesis.threats)}</div>
     </div>
 
     <h2>What to do next</h2>
@@ -469,7 +473,7 @@ export function buildReportHtml(entry: HistoryEntry, note: string): string {
   ${note.trim() ? `<h2>Reviewer notes</h2><div class="card"><p>${escapeHtml(note.trim())}</p></div>` : ""}
 
   <footer>
-    AI-generated analysis produced by DecisionX for thinking through an idea. Not financial, legal,
+    AI-generated analysis produced by DecisionnX for thinking through an idea. Not financial, legal,
     medical or professional advice. Exported ${escapeHtml(formatDate(Date.now()))}.
   </footer>
 </div>

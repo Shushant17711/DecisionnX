@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# DecisionX launcher for Omarchy (Hyprland + uwsm).
+# DecisionnX launcher for Omarchy (Hyprland + uwsm).
 #
 # Runs start_dev.sh in the background, waits until the backend and frontend
 # answer, then opens the UI as a web app window. Re-running it while the
@@ -24,14 +24,14 @@ API_URL="http://127.0.0.1:8001/api/health"
 START_TIMEOUT=180 # first run installs Python + npm deps
 
 BIN_LINK="$HOME/.local/bin/decisionx"
-DESKTOP_FILE="$HOME/.local/share/applications/DecisionX.desktop"
+DESKTOP_FILE="$HOME/.local/share/applications/DecisionnX.desktop"
 
 # Launched from the app launcher, PATH may not include mise-managed node/npm.
 [ -d "$HOME/.local/share/mise/shims" ] && export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 mkdir -p "$STATE"
 
-notify() { command -v notify-send >/dev/null && notify-send -a DecisionX -i "$ROOT/images/decisionx-icon.svg" "$@" || echo "$*"; }
+notify() { command -v notify-send >/dev/null && notify-send -a DecisionnX -i "$ROOT/images/decisionx-icon.svg" "$@" || echo "$*"; }
 
 server_pid() {
   [ -f "$PIDFILE" ] || return 1
@@ -56,11 +56,11 @@ start() {
   else
     for port in 3000 8001; do
       if port_busy "$port"; then
-        notify -u critical "DecisionX can't start" "Port $port is already in use by another program."
+        notify -u critical "DecisionnX can't start" "Port $port is already in use by another program."
         exit 1
       fi
     done
-    notify "DecisionX" "Starting servers…"
+    notify "DecisionnX" "Starting servers…"
     : >"$LOG"
     # setsid: own process group, so `stop` can take down uvicorn + next together,
     # and the servers outlive the launcher that started them.
@@ -71,11 +71,11 @@ start() {
   local waited=0
   until healthy; do
     if ! server_pid >/dev/null; then
-      notify -u critical "DecisionX failed to start" "$(tail -n 4 "$LOG")"
+      notify -u critical "DecisionnX failed to start" "$(tail -n 4 "$LOG")"
       exit 1
     fi
     if [ "$waited" -ge "$START_TIMEOUT" ]; then
-      notify -u critical "DecisionX is taking too long" "Check the log: decisionx logs"
+      notify -u critical "DecisionnX is taking too long" "Check the log: decisionx logs"
       exit 1
     fi
     sleep 1
@@ -86,7 +86,7 @@ start() {
 stop() {
   local pid
   if ! pid=$(server_pid); then
-    echo "DecisionX is not running (or was started outside this launcher)."
+    echo "DecisionnX is not running (or was started outside this launcher)."
     return 0
   fi
   kill -TERM -- "-$pid" 2>/dev/null || true
@@ -96,7 +96,7 @@ stop() {
   done
   kill -KILL -- "-$pid" 2>/dev/null || true
   rm -f "$PIDFILE"
-  notify "DecisionX" "Servers stopped."
+  notify "DecisionnX" "Servers stopped."
 }
 
 open_ui() {
@@ -126,7 +126,7 @@ install_launcher() {
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=DecisionX
+Name=DecisionnX
 Comment=Multi-agent idea evaluation panel
 Exec=$BIN_LINK open
 Icon=$ROOT/images/decisionx-icon.svg
@@ -136,16 +136,16 @@ Categories=Development;
 Actions=stop;restart;
 
 [Desktop Action stop]
-Name=Stop DecisionX servers
+Name=Stop DecisionnX servers
 Exec=$BIN_LINK stop
 
 [Desktop Action restart]
-Name=Restart DecisionX
+Name=Restart DecisionnX
 Exec=$BIN_LINK restart
 EOF
   command -v update-desktop-database >/dev/null && update-desktop-database "$(dirname "$DESKTOP_FILE")" 2>/dev/null || true
   echo "Installed: $BIN_LINK and $DESKTOP_FILE"
-  echo "Open it from the app launcher (Super+Space → DecisionX) or run: decisionx"
+  echo "Open it from the app launcher (Super+Space → DecisionnX) or run: decisionx"
 }
 
 uninstall_launcher() {
@@ -155,7 +155,7 @@ uninstall_launcher() {
 
 case "${1:-open}" in
   open) open_ui ;;
-  start) start && echo "DecisionX is up — $UI_URL" ;;
+  start) start && echo "DecisionnX is up — $UI_URL" ;;
   stop) stop ;;
   restart) stop; open_ui ;;
   status) status ;;

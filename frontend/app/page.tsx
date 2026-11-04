@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore
 
 import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
 import { BriefChecklist } from "@/components/BriefChecklist";
+import { Chamber } from "@/components/Chamber";
 import { FileDrop } from "@/components/FileDrop";
 import { HistorySidebar, HistoryToggle } from "@/components/HistorySidebar";
 import { Icon } from "@/components/Icon";
@@ -26,6 +27,33 @@ import {
 import { isEditableTarget } from "@/lib/dom";
 import { startEvaluation } from "@/lib/evaluation";
 import { FEATURED_SAMPLE_ID, seedSamples } from "@/lib/samples";
+import { BASE_PATH } from "@/lib/base";
+
+const IS_HOSTED_DEMO = BASE_PATH !== "";
+
+/** Two finished evaluations from the bundled history: one the panel passed, one it stopped. */
+const VERDICT_EXAMPLES = [
+  {
+    id: "ev_sample_discharge",
+    verdict: "Go",
+    tone: "verdict-go",
+    color: "var(--patina)",
+    score: "7.0",
+    agreement: "84%",
+    title: "Discharge follow-up calls for district hospitals",
+    gist: "Cheap, evidence-backed, wanted by the ward and the district. The panel only argued about what counts as proof.",
+  },
+  {
+    id: "ev_sample_screening",
+    verdict: "No-Go",
+    tone: "verdict-nogo",
+    color: "var(--vermilion)",
+    score: "3.0",
+    agreement: "74%",
+    title: "Identity-blind résumé screening for small HR teams",
+    gist: "Two legal seats and the investor all landed against it, for different reasons. Automated ranking is high-risk territory.",
+  },
+] as const;
 
 const EXAMPLE_IDEAS = [
   "A tiffin subscription for college students in Pune — home-style meals, monthly plans, routed by a demand model instead of fixed menus",
@@ -106,45 +134,124 @@ export default function HomePage() {
     setSampleState(outcome.ok ? "ready" : "failed");
   };
 
+  const [openingExample, setOpeningExample] = useState<string | null>(null);
+  const [exampleError, setExampleError] = useState<string | null>(null);
+  const openExample = async (id: string) => {
+    setOpeningExample(id);
+    setExampleError(null);
+    const outcome = await seedSamples();
+    if (outcome.ok) {
+      router.push(`/results?id=${id}`);
+    } else {
+      setExampleError(outcome.reason);
+      setOpeningExample(null);
+    }
+  };
+
   return (
     <div className="relative z-[1] min-h-dvh">
       <HistorySidebar open={historyOpen} onClose={closeHistory} />
 
       <nav className="mx-auto flex max-w-[76rem] items-center justify-between px-6 py-5 md:px-10">
-        <span className="wordmark">DecisionX</span>
+        <span className="wordmark">DecisionnX</span>
         <HistoryToggle onClick={openHistory} />
       </nav>
 
       <main className="mx-auto max-w-[76rem] px-6 md:px-10">
+        {/* Examples first: two finished verdicts, one each way, a click away. */}
+        <section
+          aria-labelledby="examples-heading"
+          className="examples-band mt-2 rounded-[14px] p-4 md:p-5"
+        >
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-1">
+            <h2 id="examples-heading" className="flex items-center gap-2.5 text-[1.0625rem]">
+              <span className="examples-tag">Examples</span>
+              <span>See the table decide, both ways</span>
+            </h2>
+            <p className="text-[0.8125rem] text-[var(--text-muted)]">
+              Real finished evaluations from the history. Opens the full verdict.
+            </p>
+          </div>
+          <div className="mt-4 grid gap-3 md:grid-cols-2">
+            {VERDICT_EXAMPLES.map((ex) => (
+              <button
+                key={ex.id}
+                type="button"
+                onClick={() => openExample(ex.id)}
+                disabled={openingExample !== null}
+                className="example-card group flex items-start gap-4 rounded-[10px] p-4 text-left"
+                style={{ "--seam-color": ex.color } as React.CSSProperties}
+              >
+                <span className="flex w-[4.25rem] shrink-0 flex-col items-center">
+                  <span className="display tnum text-[2.25rem] leading-none" style={{ color: ex.color }}>
+                    {ex.score}
+                  </span>
+                  <span className="mt-1 text-[0.6875rem] uppercase tracking-[0.12em] text-[var(--text-muted)]">
+                    / 10
+                  </span>
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="flex flex-wrap items-center gap-2">
+                    <span className={`verdict ${ex.tone}`}>{ex.verdict}</span>
+                    <span className="tnum text-[0.75rem] text-[var(--text-muted)]">
+                      {ex.agreement} agreement · 7 experts
+                    </span>
+                  </span>
+                  <span className="mt-2 block text-[0.9375rem] font-medium leading-snug text-[var(--foreground)]">
+                    {ex.title}
+                  </span>
+                  <span className="mt-1 block text-[0.8125rem] leading-relaxed text-[var(--text-secondary)]">
+                    {ex.gist}
+                  </span>
+                  <span className="mt-3 inline-flex items-center gap-1.5 text-[0.8125rem] font-medium text-[var(--accent)]">
+                    {openingExample === ex.id ? "Opening…" : "Open this verdict"}
+                    <Icon name="arrowRight" size={14} />
+                  </span>
+                </span>
+              </button>
+            ))}
+          </div>
+          {exampleError && (
+            <p role="alert" className="mt-3 px-1 text-[0.8125rem] text-[var(--vermilion-text)]">
+              {exampleError}
+            </p>
+          )}
+        </section>
+
         {/* Hero — offset rather than centered, so the page reads left-to-right
             into the form instead of stacking symmetric blocks. */}
-        <section className="grid items-start gap-x-16 gap-y-12 pb-8 pt-16 md:pt-24 lg:grid-cols-[1.05fr_1fr]">
+        <section className="grid items-start gap-x-16 gap-y-12 pb-8 pt-14 md:pt-20 lg:grid-cols-[1.05fr_1fr]">
           <div className="lg:sticky lg:top-10">
-            <h1 className="max-w-[14ch]">
-              Your idea,
-              <br />
-              <span className="font-medium text-[var(--accent)]">cross-examined.</span>
+            <p className="label">The chamber is open</p>
+            <h1 className="mt-5 text-[clamp(2.75rem,5.4vw,4.5rem)]">
+              Put your idea
+              <br className="hidden sm:block" />{" "}
+              <span className="display-italic text-[var(--accent)]">before the table.</span>
             </h1>
             <p className="measure mt-8 text-[1.0625rem] leading-relaxed text-[var(--text-secondary)]">
               Describe anything — a business, a system design, a policy, a research direction. A
-              panel of experts is assembled around it, each one argues its own corner, and you get
-              back a scored verdict that shows exactly where they split.
+              panel of experts takes a seat around it, each one argues their own corner, and the
+              minutes come back with a scored verdict and the exact points where the room split.
             </p>
 
-            <dl className="mt-10 flex flex-wrap gap-x-12 gap-y-6">
-              {[
-                { term: "30", detail: "experts per panel, max" },
-                { term: "12", detail: "on the standing roster" },
-                { term: "∞", detail: "designed per idea" },
-              ].map(({ term, detail }) => (
-                <div key={detail}>
-                  <dt className="tnum text-[1.75rem] font-light leading-none text-[var(--foreground)]">
-                    {term}
-                  </dt>
-                  <dd className="mt-1.5 text-[0.8125rem] text-[var(--text-muted)]">{detail}</dd>
-                </div>
-              ))}
-            </dl>
+            <Chamber
+              className="mt-10 max-w-[34rem]"
+              seats={Array.from({ length: draft.panelSize }, (_, i) => ({
+                key: String(i),
+                stance: "waiting" as const,
+              }))}
+              centre={
+                <>
+                  <span className="display tnum text-[2.75rem] leading-none text-[var(--foreground)]">
+                    {draft.panelSize}
+                  </span>
+                  <span className="mt-1 text-[0.75rem] uppercase tracking-[0.12em] text-[var(--text-secondary)]">
+                    {draft.panelSize === 1 ? "seat" : "seats"} at the table
+                  </span>
+                </>
+              }
+              caption="Change the panel size in the brief and the table resets."
+            />
 
             {/* The worked example: a complete brief and three finished evaluations,
                 so the filters and the report have something real to act on. */}
@@ -258,7 +365,7 @@ export default function HomePage() {
               disabled={!draft.idea.trim()}
               className="btn-primary mt-6 flex w-full items-center justify-center gap-2 py-3.5 text-[0.9375rem]"
             >
-              Convene the panel
+              Seat the panel
               <Icon name="arrowRight" size={17} />
             </button>
 
@@ -273,6 +380,12 @@ export default function HomePage() {
             ) : (
               <p className="mt-2.5 text-center text-[0.75rem] text-[var(--text-muted)]">
                 Results stream in as each expert finishes
+              </p>
+            )}
+            {IS_HOSTED_DEMO && (
+              <p className="mt-2 text-center text-[0.75rem] leading-relaxed text-[var(--text-muted)]">
+                Hosted demo: live panels need the backend running locally on port 8001.
+                The examples above work without it.
               </p>
             )}
           </div>
@@ -306,7 +419,7 @@ export default function HomePage() {
 
         <footer className="border-t border-[var(--border-subtle)] py-8">
           <p className="measure text-[0.75rem] leading-relaxed text-[var(--text-muted)]">
-            DecisionX produces AI-generated analysis for thinking through an idea. It is not
+            DecisionnX produces AI-generated analysis for thinking through an idea. It is not
             financial, legal, medical, or professional advice. Evaluations are stored in this
             browser only.
           </p>

@@ -1,5 +1,5 @@
 """
-DecisionX — Document text extractors (pure, synchronous)
+DecisionnX — Document text extractors (pure, synchronous)
 
 `parse_bytes` turns one uploaded file into plain text. It imports nothing from
 the web stack so it can run inside a throwaway worker process (see worker.py),

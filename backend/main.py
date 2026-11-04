@@ -1,5 +1,5 @@
 """
-DecisionX Backend — Generalized Multi-Agent Idea Evaluation Platform
+DecisionnX Backend — Generalized Multi-Agent Idea Evaluation Platform
 
 Two evaluation endpoints share one pipeline:
   POST /api/evaluate         — blocking, returns the full result
@@ -11,7 +11,7 @@ renders immediately instead of after the slowest agent plus synthesis.
 
 Exposure: the server binds to 127.0.0.1 by default. /api/evaluate* refuses
 requests whose Origin is not in DECISIONX_ALLOWED_ORIGINS, enforces an optional
-shared token (DECISIONX_API_TOKEN → header X-DecisionX-Token), and caps the
+shared token (DECISIONX_API_TOKEN → header X-DecisionnX-Token), and caps the
 request body before any of it is parsed. See config.py for every setting.
 """
 
@@ -61,7 +61,7 @@ async def lifespan(app: FastAPI):
     if config.HOST not in ("127.0.0.1", "localhost", "::1") and not config.API_TOKEN:
         log.warning("Listening on %s without DECISIONX_API_TOKEN — anyone who can reach "
                     "this port can spend your LLM quota.", config.HOST)
-    log.info("DecisionX API ready (allowed origins: %s)", ", ".join(config.ALLOWED_ORIGINS))
+    log.info("DecisionnX API ready (allowed origins: %s)", ", ".join(config.ALLOWED_ORIGINS))
     yield
     await close_clients()
 
@@ -95,7 +95,7 @@ class RequestGuard:
             supplied = headers.get("x-decisionx-token", "")
             if not hmac.compare_digest(supplied.encode(), config.API_TOKEN.encode()):
                 incr("rejected_token")
-                return await _reject(scope, receive, send, 401, "Missing or invalid X-DecisionX-Token")
+                return await _reject(scope, receive, send, 401, "Missing or invalid X-DecisionnX-Token")
 
         limit_mb = MAX_REQUEST_BYTES // (1024 * 1024)
         try:
@@ -127,7 +127,7 @@ async def _reject(scope, receive, send, status: int, detail: str) -> None:
 
 
 app = FastAPI(
-    title="DecisionX API",
+    title="DecisionnX API",
     description="Generalized Multi-Agent Idea Evaluation Platform",
     version="2.0.0",
     lifespan=lifespan,
@@ -150,7 +150,7 @@ app.add_middleware(
 async def health_check():
     return {
         "status": "ok",
-        "service": "DecisionX API",
+        "service": "DecisionnX API",
         "providers": available_providers(),
         "max_panel_size": MAX_PANEL_SIZE,
         "counters": snapshot(),

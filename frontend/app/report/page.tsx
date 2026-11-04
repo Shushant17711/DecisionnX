@@ -1,5 +1,6 @@
 "use client";
 
+import { asset } from "@/lib/base";
 /**
  * The report — one evaluation, laid out as a document rather than as an interface.
  *
@@ -225,11 +226,11 @@ function ReportView() {
           </div>
           <p className="mt-6 text-[0.8125rem] text-[var(--doc-muted)]">
             Or read a pre-generated export:{" "}
-            <a href="/sample-report.html" className="underline" style={{ color: "var(--doc-accent)" }}>
+            <a href={asset("/sample-report.html")} className="underline" style={{ color: "var(--doc-accent)" }}>
               HTML
             </a>{" "}
             ·{" "}
-            <a href="/sample-report.csv" className="underline" style={{ color: "var(--doc-accent)" }}>
+            <a href={asset("/sample-report.csv")} className="underline" style={{ color: "var(--doc-accent)" }}>
               CSV
             </a>
           </p>
@@ -270,7 +271,7 @@ function ReportView() {
       }
     >
       <header>
-        <p className="doc-label">DecisionX — panel report</p>
+        <p className="doc-label">DecisionnX — panel report</p>
         <h1 className="mt-2.5 text-base font-medium leading-relaxed text-[var(--doc-ink)]">
           {entry.idea}
         </h1>
@@ -435,7 +436,7 @@ function ReportView() {
                 ["Strengths", synthesis.strengths, "var(--doc-go)"],
                 ["Weaknesses", synthesis.weaknesses, "var(--doc-no)"],
                 ["Opportunities", synthesis.opportunities, "var(--doc-caution)"],
-                ["Threats", synthesis.threats, "oklch(45% 0.09 52)"],
+                ["Threats", synthesis.threats, "oklch(44% 0.06 60)"],
               ] as [string, string[] | undefined, string][]
             ).map(([title, items, color]) => (
               <div key={title} className="doc-card break-inside-avoid p-5">
@@ -514,7 +515,7 @@ function ReportView() {
       </div>
 
       <footer className="mt-12 border-t border-[var(--doc-rule)] pt-4 text-[0.75rem] leading-relaxed text-[var(--doc-muted)]">
-        AI-generated analysis produced by DecisionX for thinking through an idea. Not financial,
+        AI-generated analysis produced by DecisionnX for thinking through an idea. Not financial,
         legal, medical or professional advice. Evaluation {entry.id} · generated{" "}
         {formatDate(entry.createdAt)}.
       </footer>
@@ -525,10 +526,10 @@ function ReportView() {
 function DocShell({ children, toolbar }: { children: React.ReactNode; toolbar?: React.ReactNode }) {
   return (
     <div className="relative z-[1] min-h-dvh pb-16 print:pb-0">
-      <nav className="sticky top-0 z-30 border-b border-[var(--border-subtle)] bg-[oklch(7%_0.006_95/0.97)] backdrop-blur-lg print:hidden">
+      <nav className="sticky top-0 z-30 border-b border-[var(--border-subtle)] bg-[oklch(21%_0.03_138/0.96)] backdrop-blur-lg print:hidden">
         <div className="mx-auto flex max-w-[60rem] items-center gap-3 px-6 py-4">
           <Link href="/" className="wordmark mr-auto no-underline">
-            DecisionX
+            DecisionnX
           </Link>
           {toolbar}
         </div>

@@ -1,5 +1,5 @@
 """
-DecisionX — Runtime configuration
+DecisionnX — Runtime configuration
 
 Every tunable lives here and is read from the environment once at import, after
 `backend/.env` (if present) has been loaded. Provider API keys are NOT read from
@@ -74,7 +74,7 @@ ALLOWED_ORIGINS = _env_list(
 )
 
 # Optional shared secret. When set, /api/evaluate* requires header
-# `X-DecisionX-Token: <value>`. Unset (the default) disables the check.
+# `X-DecisionnX-Token: <value>`. Unset (the default) disables the check.
 API_TOKEN = os.environ.get("DECISIONX_API_TOKEN", "").strip() or None
 
 # ── Pipeline limits ─────────────────────────────────────────────────────────

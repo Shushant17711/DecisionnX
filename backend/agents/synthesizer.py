@@ -1,5 +1,5 @@
 """
-DecisionX — Synthesizer Agent
+DecisionnX — Synthesizer Agent
 
 Takes all persona outputs and produces a unified verdict.
 The most valuable insight is WHERE the experts disagree.

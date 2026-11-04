@@ -1,4 +1,4 @@
-/** Shapes returned by the DecisionX API. Mirrors backend/agents/orchestrator.py. */
+/** Shapes returned by the DecisionnX API. Mirrors backend/agents/orchestrator.py. */
 
 export interface ChartPoint {
   label: string;
